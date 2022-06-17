@@ -15,7 +15,8 @@ open `watch_address.json` file and push address
         "0xEF39362f69f041F3057A02F4bBe673C6F59c0d40",
         "0x80A25bB487e89e79599c9ACAe6dbc6b8a5F1BCDc",
         "0x6104f6684F4F966E4B81CDf9a6B4836052CDa456",
-        "0x2e8a6368f20d3b66a5deade6a2189df6ab02066c"
+        "0x2e8a6368f20d3b66a5deade6a2189df6ab02066c",
+        ....
     ]
 }
 
