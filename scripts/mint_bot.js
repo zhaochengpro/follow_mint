@@ -1,9 +1,9 @@
 const ethers = require("ethers");
+
 const readline = require("readline")
 let { addresses } = require("./watch_address.json");
 
 function sleep(milliseconds) { const date = Date.now(); let currentDate = null; do { currentDate = Date.now(); } while (currentDate - date < milliseconds); }
-
 
 let filter = {
     topics: [
@@ -51,11 +51,12 @@ let abi = [
 
 
 (async () => {
-    private_key = await askQuestion("请输入私钥：")
+    private_key = await askQuestion("请输入私钥：")//
+                                                // 
     gasLimit = await askQuestion("请输入gas: ");
     targetValue = await askQuestion("请输入价格: ");
 
-    provider = new ethers.providers.WebSocketProvider("wss://eth-mainnet.alchemyapi.io/v2/uQI5scqee6ZVvf2XK3UmBsbA36iF-50V");
+    provider = new ethers.providers.WebSocketProvider("wss://eth-mainnet.alchemyapi.io/v2/EN0QRyY_Oq_A74C63VBW3HxJSVlnTbJ1");
     wallet = new ethers.Wallet(private_key, provider);
     minted = [];
     nonces = [];
@@ -65,6 +66,7 @@ let abi = [
     addresses = addresses.map((v, i) => {
         return "0x000000000000000000000000" + v.toLocaleLowerCase().slice(2);
     })
+    heartbeat(provider);
 
     filter.topics.push(addresses);
     console.log(addresses);
@@ -75,6 +77,8 @@ let abi = [
         ret = await listen();
     }
 
+    // osList();
+
     function listen() {
         return new Promise((resolve, reject) => {
             try {
@@ -83,6 +87,7 @@ let abi = [
                     if (!loged.includes(transactionHash)) {
                         // console.log(log);
                         loged.push(transactionHash);
+                        
                         let transaction = await provider.getTransaction(transactionHash).catch((err) => {
                             reject(err);
                         });
@@ -144,7 +149,12 @@ let abi = [
 
     }
 
-
+    function heartbeat(provider) {
+        setInterval(async () => {
+            let number = await provider.getBlockNumber();
+            // console.log(number);
+        }, 1 * 60 * 1000)
+    }
 
     async function isERC721(address) {
         try {
